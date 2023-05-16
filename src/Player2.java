@@ -8,51 +8,66 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
 
-public class Player2{
+public class Player2 {
 	//add location attributes
 	private int x,y;
+	private int vx,vy;
 	private Image img; 	
+	private Image attackImg;
 	private AffineTransform tx;
-	
-	public Player2() {
-		img = getImage("/imgs/ryu.gif");
-		tx = AffineTransform.getTranslateInstance(x,y);
-		x = 100;
-		y = 100;
-		
-		}
-	
+	private boolean moving;
 	
 
-
-	
-	public Player2(String fileName) {
-	img = getImage("/imgs/" +fileName); //load the image for Tree
-		tx = AffineTransform.getTranslateInstance(0, 0);
+public Player2() {
+		img = getImage("/imgs/ken.gif");
+		attackImg = getImage("/imgs/kenpunching.png");
+;		tx = AffineTransform.getTranslateInstance(x,y);
+		x = 950;
+		y = 300;
 		init(x,y); 	
 		
-	}
-	
-	public void changePicture(String newFileName) {
+		}
+
+public void changePicture(String newFileName) {
 		img = getImage(newFileName);
 		init(x, y);
 	}
 	
-	public void paint(Graphics g) {
+public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(img, tx, null);
-		
+		x+=vx;
+		y+=vy;
+		init(x,y);
 		
 		}
 	
 	
-	private void init(double a, double b) {
+private void init(double a, double b) {
 		tx.setToTranslation(a, b);
-		tx.scale(.25, .25);
+		tx.scale(.75, .75);
 	}
+//MOVING
 
-	private Image getImage(String path) {
+public void left() {
+	vx = -20;
+}
+public void right() {
+	vx = 20;
+}
+public void stop() {
+	vx = 0;
+}
+
+//ATTACKING
+public void attack() {
+	Graphics2D g2 = null;
+	g2.drawImage(attackImg, tx, null);
+}
+
+
+private Image getImage(String path) {
 			Image tempImage = null;
 				try {
 						URL imageURL = Player2.class.getResource(path);

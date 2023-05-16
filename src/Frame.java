@@ -17,22 +17,18 @@ import javax.swing.Timer;
 
 
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener {
-	Background b = new Background();
-	Player home = new Player();
-	Player2 away = new Player2();
+	Background home= new Background();
+	Player1 a = new Player1();
+	Player2 b = new Player2();
+	
+	
 	public void paint(Graphics g) {
 		g.fillRect(0,0,800,800);
 		super.paintComponent(g);
-		//b.paint(g);
 		home.paint(g);
-		away.paint(g);
-		g.setColor(new Color(255,0,255));
-		Font plainFont = new Font("Impact",Font.PLAIN,50);
-		g.setFont(plainFont);
-		g.setColor(new Color(255,0,0));
+		a.paint(g);
+		b.paint(g);
 	
-
-
 	}
 
 		
@@ -100,11 +96,45 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		System.out.println(arg0.getKeyCode());
+		if(arg0.getKeyCode()==65) {
+			a.left();
+		}
+		if(arg0.getKeyCode()==68) {
+			a.right();
+		}
+		
+		//player 2
+		if(arg0.getKeyCode()==37) {
+			b.left();
+		}
+		if(arg0.getKeyCode()==39) {
+			b.right();
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
+		
+		//player 1
+		if(arg0.getKeyCode()==65) {
+			a.stop();
+		}
+		if(arg0.getKeyCode()==68) {
+			a.stop();
+		}
+		
+		//player 2
+		if(arg0.getKeyCode()==37) {
+			b.stop();
+		}
+		if(arg0.getKeyCode()==39) {
+			b.stop();
+		}
+		
+		if(arg0.getKeyCode()==40) {
+			b.attack();
+		}
 		
 	}
 

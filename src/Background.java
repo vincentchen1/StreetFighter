@@ -46,7 +46,7 @@ public class Background{
 	
 	private void update() {
 		ix.setToTranslation(x, y);
-		ix.scale(1, 1);
+		ix.scale(1.25, 1);
 	}
 	
 	private void init(double a, double b) {
