@@ -4,46 +4,81 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
+import java.util.Timer;
 
-public class Player1 {
+public class Player1 extends Character{
 	//add location attributes
-	private int x,y;
 	private int vx, vy;
-	private Image img; 	
+	private Image img; 
+	private Image idle;
+	private Image attack;
 	private AffineTransform tx;
+	private int delay = 150;
+	private boolean transition = false;
 	
-
-	
-	public Player1(){
-		img = getImage("/imgs/ryu.gif"); 
+	//CONSTRUCTOR FOR PLAYER: INITIALIZES THE HEALTH, ALONG WITH WHAT FILES NEED TO BE USED
+	public Player1(String name, int health, int x, int y){
+		super(name,health, x, y);
+		idle = getImage("/imgs/ryu.gif"); 
+		attack = getImage("/imgs/ryu attac.png");
+		img = idle;
 		tx = AffineTransform.getTranslateInstance(x,y);
-		x = 0;
-		y = 300;
+//		x = 0;
+//		y = 300;
 		init(x,y);
-
-		}	
+}	
 	
-	
+	//SETS "IMG" VARIABLE TO IDLE, BUT CAN BE CHANGED LATER IN THE CODE 
 	public void changePicture(String newFileName) {
 		img = getImage(newFileName);
 	}
 	
+	//sets boundaries
+	//if character collides with edge of screen,
+	//essentially teleports them back into place
 	public void paint(Graphics g) {
+		if(x <= -50) {
+			x = 0;
+		}
+		if(x >= 1075) {
+			x = 1000;
+		}
+		
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(img, tx, null);
+//		g.setColor();
+		g2.drawRect(x, y, 200, 400);
 		x+=vx;
 		y+=vy;
 		init(x,y); //call this if you're updating x,y
+		if(transition) {
+			if(delay <= 0) {
+				img = idle;
+				transition = false;
+				delay = 150;
+			}else {
+				delay -= 16;
+			}
 		}
+	}
 	
 	private void init(double a, double b) {
 		tx.setToTranslation(a, b);
 		tx.scale(.75,.75);
 	}
+	
+
+	
+	//boundary
+	
+	
+	
 	
 	
 	//MOVING
@@ -51,17 +86,20 @@ public class Player1 {
 	public void left() {
 		vx = -20;
 	}
+	
 	public void right() {
 		vx = 20;
 	}
+	
 	public void stop() {
 		vx=0;
 	}
 	
-	public void boundary( ) {
-		if (x > 0) {
-			x = -x;
-		}
+	public void attack() {
+		 img = attack;
+		 
+		 transition = true;
+
 	}
 
 
@@ -77,7 +115,5 @@ public class Player1 {
 	}
 	
 }
-
-
 
 

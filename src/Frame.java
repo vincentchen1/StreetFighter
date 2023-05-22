@@ -18,17 +18,32 @@ import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener {
 	Background home= new Background();
-	Player1 a = new Player1();
-	Player2 b = new Player2();
+	Player1 a = new Player1("Ryu", 100, 0, 300);
+	Player2 b = new Player2("Ken", 100, 1000, 300);
 	
+	int Playerhealth = a.getHealth();
+	int Player2health = b.getHealth();
+
 	
 	public void paint(Graphics g) {
 		g.fillRect(0,0,800,800);
 		super.paintComponent(g);
 		home.paint(g);
 		a.paint(g);
+		a.collision(b.getX(),b.getY());
 		b.paint(g);
-	
+		b.collision(a.getX(), a.getY());
+		
+		Font plainfont = new Font("Courier New", Font.PLAIN,90);
+		g.setFont(plainfont);
+		g.setColor(Color.red);
+		g.drawString(" " + b.getHealth(),10, 100);
+		
+		Font player1font = new Font("Courier New", Font.PLAIN,90);
+		g.setFont(player1font);
+		g.setColor(Color.blue);
+		g.drawString(" " + a.getHealth(), 1000, 100);
+		
 	}
 
 		
@@ -53,17 +68,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		
 	}
 	
-	
-	
-	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 	
 	}
 	
-	
-
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -94,8 +104,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 
 	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
 		System.out.println(arg0.getKeyCode());
+		
+		//player 1
 		if(arg0.getKeyCode()==65) {
 			a.left();
 		}
@@ -103,12 +114,26 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			a.right();
 		}
 		
+		
+		//attack call
+		if(arg0.getKeyCode() == 70) {
+			 a.attack();
+		}
+		
+		
+		
 		//player 2
 		if(arg0.getKeyCode()==37) {
 			b.left();
 		}
 		if(arg0.getKeyCode()==39) {
 			b.right();
+		}
+		
+		
+		//attack call
+		if(arg0.getKeyCode() == 17) {
+			 b.attack();
 		}
 	}
 
@@ -123,6 +148,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if(arg0.getKeyCode()==68) {
 			a.stop();
 		}
+
 		
 		//player 2
 		if(arg0.getKeyCode()==37) {
@@ -132,9 +158,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			b.stop();
 		}
 		
-		if(arg0.getKeyCode()==40) {
-			b.attack();
-		}
+	
 		
 	}
 
