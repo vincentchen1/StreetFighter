@@ -52,7 +52,7 @@ public class Character {
 		this.name = name;
 	}
 	
-	public void collision(int otherPlayerX,int otherPlayerY) {
+	public void colli	sion(int otherPlayerX,int otherPlayerY) {
 		
 	}
 
