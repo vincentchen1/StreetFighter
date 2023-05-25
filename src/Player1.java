@@ -11,109 +11,83 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 import java.util.Timer;
 
-public class Player1 extends Character{
-	//add location attributes
-	private int vx, vy;
-	private Image img; 
+public class Player1 extends Character {
+	// add location attributes
+	private Image img;
 	private Image idle;
 	private Image attack;
 	private AffineTransform tx;
 	private int delay = 150;
 	private boolean transition = false;
-	
-	//CONSTRUCTOR FOR PLAYER: INITIALIZES THE HEALTH, ALONG WITH WHAT FILES NEED TO BE USED
-	public Player1(String name, int health, int x, int y){
-		super(name,health, x, y);
-		idle = getImage("/imgs/ryu.gif"); 
+
+	// CONSTRUCTOR FOR PLAYER: INITIALIZES THE HEALTH, ALONG WITH WHAT FILES NEED TO
+	// BE USED
+	public Player1(String name, int health, int x, int y, int width) {
+		super(name, health, x, y, width, -1);
+		idle = getImage("/imgs/ryu.gif");
 		attack = getImage("/imgs/ryu attac.png");
 		img = idle;
-		tx = AffineTransform.getTranslateInstance(x,y);
-//		x = 0;
-//		y = 300;
-		init(x,y);
-}	
-	
-	//SETS "IMG" VARIABLE TO IDLE, BUT CAN BE CHANGED LATER IN THE CODE 
+		tx = AffineTransform.getTranslateInstance(x, y);
+
+		init(x, y);
+	}
+
+	// SETS "IMG" VARIABLE TO IDLE, BUT CAN BE CHANGED LATER IN THE CODE
 	public void changePicture(String newFileName) {
 		img = getImage(newFileName);
 	}
-	
-	//sets boundaries
-	//if character collides with edge of screen,
-	//essentially teleports them back into place
+
+	// sets boundaries if character collides with edge of screen,
 	public void paint(Graphics g) {
-		if(x <= -50) {
+		if (x <= -50) {
 			x = 0;
 		}
-		if(x >= 1075) {
+		if (x >= 1075) {
 			x = 1000;
 		}
-		
-		//these are the 2 lines of code needed draw an image on the screen
+
+		// these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(img, tx, null);
 //		g.setColor();
-		g2.drawRect(x, y, 200, 400);
-		x+=vx;
-		y+=vy;
-		init(x,y); //call this if you're updating x,y
-		if(transition) {
-			if(delay <= 0) {
+		//g2.drawRect(x, y, 195, 400);
+		x += vx;
+		y += vy;
+		init(x, y); // call this if you're updating x,y
+		if (transition) {
+			if (delay <= 0) {
 				img = idle;
 				transition = false;
 				delay = 150;
-			}else {
+			     isAttacking = false;
+			     justAttacked = false;
+			} else {
 				delay -= 16;
 			}
 		}
 	}
-	
+
 	private void init(double a, double b) {
 		tx.setToTranslation(a, b);
-		tx.scale(.75,.75);
+		tx.scale(.75, .75);
 	}
-	
 
-	
-	//boundary
-	
-	
-	
-	
-	
-	//MOVING
-
-	public void left() {
-		vx = -20;
-	}
-	
-	public void right() {
-		vx = 20;
-	}
-	
-	public void stop() {
-		vx=0;
-	}
-	
 	public void attack() {
-		 img = attack;
-		 
-		 transition = true;
-
+		img = attack;
+		transition = true;
+		isAttacking = true;
+		justAttacked = true;
 	}
-
 
 	private Image getImage(String path) {
-			Image tempImage = null;
-				try {
-						URL imageURL = Player1.class.getResource(path);
-						tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
-				} catch (Exception e) {
-					e.printStackTrace();
+		Image tempImage = null;
+		try {
+			URL imageURL = Player1.class.getResource(path);
+			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-				return tempImage;
+		return tempImage;
 	}
-	
+
 }
-
-

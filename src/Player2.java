@@ -9,100 +9,84 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 public class Player2 extends Character {
-	//add location attributes
-	private int vx,vy;
+	// add location attributes
 	private Image img;
-	private Image idle; 	
+	private Image idle;
 	private Image attack;
 	private AffineTransform tx;
 	private int delay = 150;
-	private boolean t;
+	private boolean transition;
 
-	
-
-public Player2(String name, int health, int x, int y) {
-	super(name,health, x, y);
+	public Player2(String name, int health, int x, int y, int width) {
+		super(name, health, x, y, width, 1);
 		idle = getImage("/imgs/ken.gif");
 		attack = getImage("/imgs/kenpunching.png");
 		img = idle;
-;		tx = AffineTransform.getTranslateInstance(x,y);
-//		x = 1000;
-//		y = 300;
-		init(x,y); 	
-		
-		}
+		tx = AffineTransform.getTranslateInstance(x, y);
 
-public void changePicture(String newFileName) {
+		init(x, y);
+
+	}
+
+	public void changePicture(String newFileName) {
 		img = getImage(newFileName);
 	}
-	
-public void paint(Graphics g) {
-	//boundary
-	if(x <= -50) {
-		x = 0;
-	}
-	if(x >= 1075) {
-		x = 1000;
-	}
-	
-		//these are the 2 lines of code needed draw an image on the screen
+
+	public void paint(Graphics g) {
+		// boundary
+		if (x <= -50) {
+			x = 0;
+		}
+		if (x >= 1075) {
+			x = 1000;
+		}
+
+		// these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(img, tx, null);
 //		g.setColor();
-		g2.drawRect(x, y, 250, 400);
-		x+=vx;
-		y+=vy;
-		init(x,y);
-		if(t) {
-			if(delay <= -10) {
+		//g2.drawRect(x + 20, y, 200, 400);
+		x += vx;
+		y += vy;
+		init(x, y);
+		if (transition) {
+			if (delay <= -10) {
 				img = idle;
-				t = false;
+				transition = false;
 				delay = 150;
-			}else {
+			     isAttacking = false;
+			     justAttacked = false;
+			} else {
 				delay -= 16;
 			}
 		}
-		
-		
-		}
-	
-	
-private void init(double a, double b) {
+
+	}
+
+	private void init(double a, double b) {
 		tx.setToTranslation(a, b);
 		tx.scale(.75, .75);
 	}
 
-//MOVING
-
-public void left() {
-	vx = -20;
-}
-public void right() {
-	vx = 20;
-}
-public void stop() {
-	vx = 0;
-}
-
 //ATTACKING
-public void attack() {
-	img = attack;
-	t = true;
-	
-}
+	public void attack() {
+		img = attack;
+		transition = true;
+		isAttacking = true;
+	    justAttacked = true;
 
 
-
-private Image getImage(String path) {
-			Image tempImage = null;
-				try {
-						URL imageURL = Player2.class.getResource(path);
-						tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
-				} catch (Exception e) {
-					e.printStackTrace();
-		}
-				return tempImage;
 	}
-	
-}
 
+	private Image getImage(String path) {
+		Image tempImage = null;
+		try {
+			URL imageURL = Player2.class.getResource(path);
+			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tempImage;
+	}
+
+}

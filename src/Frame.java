@@ -18,11 +18,12 @@ import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener {
 	Background home= new Background();
-	Player1 a = new Player1("Ryu", 100, 0, 300);
-	Player2 b = new Player2("Ken", 100, 1000, 300);
+	Player1 a = new Player1("Ryu", 100, 200, 300, 200);
+	Player2 b = new Player2("Ken", 100, 1000, 300, 200);
 	
 	int Playerhealth = a.getHealth();
 	int Player2health = b.getHealth();
+	private static final float GRAVITY = 0.5f;
 
 	
 	public void paint(Graphics g) {
@@ -30,9 +31,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		super.paintComponent(g);
 		home.paint(g);
 		a.paint(g);
-		a.collision(b.getX(),b.getY());
+		a.collision(b);
 		b.paint(g);
-		b.collision(a.getX(), a.getY());
+		b.collision(a);
 		
 		Font plainfont = new Font("Courier New", Font.PLAIN,90);
 		g.setFont(plainfont);
@@ -100,6 +101,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
+
 		repaint();
 	}
 
@@ -112,6 +114,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		if(arg0.getKeyCode()==68) {
 			a.right();
+		}
+		if(arg0.getKeyCode()==87) {
+			a.jump();
 		}
 		
 		
@@ -128,6 +133,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		if(arg0.getKeyCode()==39) {
 			b.right();
+		}
+		if(arg0.getKeyCode()== 38) {
+			b.jump();
 		}
 		
 		
@@ -148,6 +156,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if(arg0.getKeyCode()==68) {
 			a.stop();
 		}
+		if(arg0.getKeyCode()==87) {
+			a.stop();
+		}
+		
 
 		
 		//player 2
@@ -155,6 +167,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			b.stop();
 		}
 		if(arg0.getKeyCode()==39) {
+			b.stop();
+		}
+		if(arg0.getKeyCode()==38) {
 			b.stop();
 		}
 		
