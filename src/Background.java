@@ -11,6 +11,7 @@ public class Background{
 	//add location attributes
 	private int x,y;
 	private Image img1; 	
+	private Image end;
 	private AffineTransform ix; 
 
 
@@ -18,13 +19,15 @@ public class Background{
 		img1 = getImage("/imgs/Cookin.gif"); 
 		ix = AffineTransform.getTranslateInstance(x,y);
 		init(x,y); 						
-		}
-
+		}			
+	
 	public Background(String fileName) {
 	img1 = getImage("/imgs/" +fileName); //load the image for Tree
 		ix = AffineTransform.getTranslateInstance(0, 0);
 		init(x,y); 	
 	}
+	
+
 	
 	public void changePicture(String newFileName) {
 		img1 = getImage(newFileName);

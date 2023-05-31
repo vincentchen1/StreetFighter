@@ -4,20 +4,23 @@ public class Character {
 	protected String name;
 	protected int x;
 	protected int y;
-	protected int vx, vy;
+	protected double vx, vy;
 	protected int width;
 	protected int side;
 	protected boolean isAttacking;
 	protected boolean justAttacked;
 	protected boolean isJumping;
+	protected boolean falling;
+	protected double gravity;
+	protected int ground = 200;
 	
 	
    
 	public void setVy(int vy) {
-	    this.vy = vy;
+	    this.vy = vy + gravity;
 	}
 
-	public int getVy() {
+	public double getVy() {
 	    return vy;
 	}
 	
@@ -30,11 +33,25 @@ public class Character {
 	}
 
 	public void jump() {
-	    if (!isJumping) { // Jump only if the character is not already jumping
-	        vy = -20; // Adjust this value as needed
-	        isJumping = true;
+	    if (gravity != 2) { // Jump only if the character is not already jumping
+	     vy = -10 ; // Adjust this value as needed
+	     gravity = 2;
+	     falling = true;
 	    }
 	}
+	
+	public void update() {
+		if(falling) {
+			y += gravity;
+			if(y >= ground) {
+				y = ground;
+				falling = false;
+				
+			}
+		}
+	}
+
+	
 	public boolean isAttacking() {
 	    return isAttacking;
 	}

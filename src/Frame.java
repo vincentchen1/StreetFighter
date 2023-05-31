@@ -17,34 +17,47 @@ import javax.swing.Timer;
 
 
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener {
-	Background home= new Background();
+	Background home = new Background();
+	GameOver endScreen = new GameOver();
 	Player1 a = new Player1("Ryu", 100, 200, 300, 200);
 	Player2 b = new Player2("Ken", 100, 1000, 300, 200);
 	
+	//boolean for gameOver - set to false
+	public boolean gameOver = false;
+	
 	int Playerhealth = a.getHealth();
 	int Player2health = b.getHealth();
-	private static final float GRAVITY = 0.5f;
 
 	
 	public void paint(Graphics g) {
+		
 		g.fillRect(0,0,800,800);
 		super.paintComponent(g);
-		home.paint(g);
-		a.paint(g);
-		a.collision(b);
-		b.paint(g);
-		b.collision(a);
+		gameOver();
+		if(!gameOver) {
+			home.paint(g);
+			a.paint(g);
+			a.collision(b);
+			b.paint(g);
+			b.collision(a);
+			
 		
-		Font plainfont = new Font("Courier New", Font.PLAIN,90);
-		g.setFont(plainfont);
-		g.setColor(Color.red);
-		g.drawString(" " + b.getHealth(),10, 100);
+			
+			Font plainfont = new Font("impact", Font.PLAIN,90);
+			g.setFont(plainfont);
+			g.setColor(Color.red);
+			g.drawString(" " + b.getHealth(),1100, 100);
+			
+			Font player1font = new Font("impact", Font.PLAIN,90);
+			g.setFont(player1font);
+			g.setColor(Color.green);
+			g.drawString(" " + a.getHealth(), 10, 100);
+		}else {
+			//game over related painting stuff
+			endScreen.paint(g);
+		}
 		
-		Font player1font = new Font("Courier New", Font.PLAIN,90);
-		g.setFont(player1font);
-		g.setColor(Color.blue);
-		g.drawString(" " + a.getHealth(), 1000, 100);
-		
+
 	}
 
 		
@@ -52,6 +65,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		Frame f = new Frame();
 		
 	}
+	
+
 	
 	public Frame() {
 		JFrame f = new JFrame("Punch Punch");
@@ -101,8 +116,15 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-
+		a.update();
+		b.update();
 		repaint();
+	}
+	
+	public void reset() {
+		a.reset();
+		b.reset();
+		gameOver = false;
 	}
 
 	public void keyPressed(KeyEvent arg0) {
@@ -117,6 +139,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		if(arg0.getKeyCode()==87) {
 			a.jump();
+		}
+		if(arg0.getKeyCode()==83) {
+			
 		}
 		
 		
@@ -136,6 +161,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		if(arg0.getKeyCode()== 38) {
 			b.jump();
+		}
+		if(arg0.getKeyCode()== 40) {
+		
 		}
 		
 		
@@ -160,7 +188,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			a.stop();
 		}
 		
-
+		if(arg0.getKeyCode()==82 && gameOver) {
+			reset();
+		}
 		
 		//player 2
 		if(arg0.getKeyCode()==37) {
@@ -176,6 +206,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	
 		
 	}
+	
+	public void gameOver() {
+		if (a.getHealth() == 0 || b.getHealth() == 0) {
+			gameOver = true;
+		}
+	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
@@ -183,8 +219,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		
 	}
 	
-	public void reset() {
-		
-	}
+
 
 }

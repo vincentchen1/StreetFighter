@@ -36,15 +36,34 @@ public class Player1 extends Character {
 	public void changePicture(String newFileName) {
 		img = getImage(newFileName);
 	}
+	
+
+	public void reset() {
+		health = 100;
+		x = 50;
+		y = 300;
+		
+	}
 
 	// sets boundaries if character collides with edge of screen,
 	public void paint(Graphics g) {
 		if (x <= -50) {
+		//left wall
 			x = 0;
 		}
+		
+		//right wall
 		if (x >= 1075) {
 			x = 1000;
 		}
+		
+		if (y >= 300) {
+			y = 300;
+			vy = 0;
+			gravity = 0;
+		}
+		
+
 
 		// these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
@@ -53,6 +72,8 @@ public class Player1 extends Character {
 		//g2.drawRect(x, y, 195, 400);
 		x += vx;
 		y += vy;
+		
+		vy += gravity;
 		init(x, y); // call this if you're updating x,y
 		if (transition) {
 			if (delay <= 0) {

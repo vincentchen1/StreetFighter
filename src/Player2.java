@@ -25,9 +25,16 @@ public class Player2 extends Character {
 		tx = AffineTransform.getTranslateInstance(x, y);
 
 		init(x, y);
-
 	}
+	
 
+	
+	public void reset() {
+		health = 100;
+		x = 1200;
+		y = 300;
+		
+	}
 	public void changePicture(String newFileName) {
 		img = getImage(newFileName);
 	}
@@ -35,12 +42,20 @@ public class Player2 extends Character {
 	public void paint(Graphics g) {
 		// boundary
 		if (x <= -50) {
-			x = 0;
-		}
-		if (x >= 1075) {
-			x = 1000;
-		}
-
+			//left wall
+				x = 0;
+			}
+			
+			//right wall
+			if (x >= 1075) {
+				x = 1000;
+			}
+			
+			if (y >= 300) {
+				y = 300;
+				vy = 0;
+				gravity = 0;
+			}
 		// these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(img, tx, null);
@@ -48,6 +63,8 @@ public class Player2 extends Character {
 		//g2.drawRect(x + 20, y, 200, 400);
 		x += vx;
 		y += vy;
+		
+		vy += gravity;
 		init(x, y);
 		if (transition) {
 			if (delay <= -10) {
